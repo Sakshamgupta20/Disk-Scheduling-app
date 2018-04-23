@@ -5,23 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Enter the number of cylinders" />
+            android:text="Number Of Cylinders"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="#000000"/>
         <EditText
             android:id="@+id/cylinder_Edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter here"
+            android:textColor="#E91E63"
             android:layout_weight="1"
             android:inputType="number"/>
     </LinearLayout>
@@ -29,44 +34,55 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:paddingTop="10sp"
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Enter the Header position" />
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="Header position" />
         <EditText
             android:id="@+id/header_Edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter here"
+            android:textColor="#E91E63"
             android:layout_weight="1"
             android:inputType="number"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:paddingTop="10sp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Enter pre-request position" />
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="Pre-Request position" />
         <EditText
             android:id="@+id/prerequest_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter here"
+            android:textColor="#E91E63"
             android:layout_weight="1"
             android:inputType="number"/>
     </LinearLayout>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:text="Enter"
         android:textSize="20dp"
         android:layout_margin="20dp"
         android:onClick="enter"
+        android:background="#FF80AB"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
 </LinearLayout>

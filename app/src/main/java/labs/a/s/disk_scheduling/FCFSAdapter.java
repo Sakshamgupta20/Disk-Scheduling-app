@@ -42,7 +42,16 @@ public class FCFSAdapter extends RecyclerView.Adapter<FCFSAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.text.setText(String.valueOf(list[position]));
+        String temp;
+        if(position==b-1)
+        {
+             temp=String.valueOf(list[position]);
+        }
+        else
+        {
+             temp=String.valueOf(list[position])+" -> ";
+        }
+        holder.text.setText(temp);
     }
 
     @Override

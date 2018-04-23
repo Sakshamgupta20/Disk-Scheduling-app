@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import static java.lang.Math.abs;
@@ -14,10 +15,11 @@ import static java.lang.Math.abs;
 public class Main2Activity extends AppCompatActivity {
 
     EditText Etrack;
-    int header,pre_request,ncylinder;
+    int header=0,pre_request=0,ncylinder=0;
     int ntrack=0,he;
     Integer[] track_request = new Integer[100];
     Integer[] track_original = new Integer[100];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +31,9 @@ public class Main2Activity extends AppCompatActivity {
         pre_request = getIntent().getIntExtra("prerequest",0);
 
         Etrack = (EditText)findViewById(R.id.trackrequest_edit);
-    }
 
+
+    }
 
     public void addtrack(View view) {
         //check if empty
@@ -41,31 +44,33 @@ public class Main2Activity extends AppCompatActivity {
         else{
             //Getting data from edittext
             int track = Integer.parseInt(Etrack.getText().toString());
+            Etrack.setText("");
             track_original[ntrack]=track;
             track_request[ntrack]=track;
             ntrack++;
-         //  fcfs();
-          //sstf();
-          sort();
+           fcfs();
+          sstf();
+         sort();
          scan();
-        //     look();
-       //   c_scan();
-       //     clook();
+            look();
+          c_scan();
+           clook();
         }
     }
 
     void sort() {
+        int temp=0;
         for (int i = 0; i < ntrack; i++) {
-            for (int j = 0; j < ntrack; j++) {
-                if (track_request[i] < track_request[j]) {
-                    int t = track_request[i];
+            for (int j = i; j < ntrack; j++) {
+                if (track_request[i] > track_request[j]) {
+                     temp = track_request[i];
                     track_request[i] = track_request[j];
-                    track_request[j] = t;
+                    track_request[j] = temp;
                 }
             }
         }
-        for (int i = 0; i < ntrack; i++) {
-            if (header >= track_request[i] && header < track_request[i + 1]) {
+        for (int i = 0; i < ntrack-1; i++) {
+            if (header >= track_request[i]&& header < track_request[i + 1]) {
                 he = i;
             }
         }
@@ -95,6 +100,9 @@ public class Main2Activity extends AppCompatActivity {
             head=track_original[i];
             sum=sum+sequence[i];
         }
+        TextView textView=(TextView)findViewById(R.id.fcfssum);
+        String temp="Seek Time="+String.valueOf(sum);
+        textView.setText(temp);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.fcfs);
         LinearLayoutManager layoutManager
@@ -140,6 +148,10 @@ public class Main2Activity extends AppCompatActivity {
                 cheader=track_original[index];
             }
         }
+
+        TextView textView=(TextView)findViewById(R.id.sstfsum);
+        String temp="Seek Time="+String.valueOf(sum);
+        textView.setText(temp);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.sstu);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -161,6 +173,7 @@ public class Main2Activity extends AppCompatActivity {
 
         Integer[] current_header = new Integer[100];
         int k=1;
+        int count=0;
         current_header[0]=header;
         if(header >= pre_request)
         {
@@ -175,6 +188,12 @@ public class Main2Activity extends AppCompatActivity {
                     k++;
                     break;
                 }
+                count++;
+            }
+            if(count==0)
+            {
+                current_header[k]=ncylinder-1;
+                k++;
             }
             for(int i=he;i>=0;i--)
             {
@@ -196,6 +215,12 @@ public class Main2Activity extends AppCompatActivity {
                     k++;
                     break;
                 }
+                count++;
+            }
+            if(count==0)
+            {
+                current_header[k]=0;
+                k++;
             }
             for(int i=he+1;i<ntrack;i++)
             {
@@ -206,10 +231,15 @@ public class Main2Activity extends AppCompatActivity {
         }
 
         int seek_time=0;
-        for(int i=0;i<ntrack+1;i++)
+        for(int i=0;i<=ntrack-1;i++)
         {
             seek_time+=abs(current_header[i]-current_header[i+1]);
         }
+
+        TextView textView=(TextView)findViewById(R.id.scansum);
+        String temp="Seek Time="+String.valueOf(seek_time);
+        textView.setText(temp);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.scan);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -218,7 +248,7 @@ public class Main2Activity extends AppCompatActivity {
         FCFSAdapter adapter = new FCFSAdapter(this);
 
         adapter.setBakingData(current_header);
-        adapter.setBakingNumber(ntrack);
+        adapter.setBakingNumber(ntrack+2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
@@ -232,6 +262,7 @@ public class Main2Activity extends AppCompatActivity {
         Integer[] current_header = new Integer[100];
         int k=1;
         current_header[0]=header;
+
         if(header >= pre_request)
         {
 
@@ -250,7 +281,7 @@ public class Main2Activity extends AppCompatActivity {
 
         else
         {
-             k=0;
+
             for(int i=he;i>=0;i--)
             {
                 current_header[k]=track_request[i];
@@ -274,7 +305,9 @@ public class Main2Activity extends AppCompatActivity {
             seek_time+=abs(current_header[i]-current_header[i+1]);
 
         }
-
+        TextView textView=(TextView)findViewById(R.id.looksum);
+        String temp="Seek Time="+String.valueOf(seek_time);
+        textView.setText(temp);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.look);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -283,7 +316,7 @@ public class Main2Activity extends AppCompatActivity {
         FCFSAdapter adapter = new FCFSAdapter(this);
 
         adapter.setBakingData(current_header);
-        adapter.setBakingNumber(ntrack);
+        adapter.setBakingNumber(ntrack+1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
@@ -294,6 +327,7 @@ public class Main2Activity extends AppCompatActivity {
     {
         Integer[] current_header = new Integer[100];
         int k=1;
+        int count=0;
         current_header[0]=header;
         if(header >= pre_request)
         {
@@ -309,6 +343,12 @@ public class Main2Activity extends AppCompatActivity {
                     k++;
                     break;
                 }
+                count++;
+            }
+            if(count==0)
+            {
+                current_header[k]=ncylinder-1;
+                k++;
             }
 
             for(int i=0;i<=he;i++)
@@ -331,8 +371,14 @@ public class Main2Activity extends AppCompatActivity {
                     k++;
                     break;
                 }
+                count++;
             }
-            for(int i=ntrack-1;i>=he;i++)
+            if(count==0)
+            {
+                current_header[k]=0;
+                k++;
+            }
+            for(int i=ntrack-1;i>=he;i--)
             {
                 current_header[k]=track_request[i];
                 k++;
@@ -349,7 +395,9 @@ public class Main2Activity extends AppCompatActivity {
             seek_time+=abs(current_header[i]-current_header[i+1]);
 
         }
-
+        TextView textView=(TextView)findViewById(R.id.cscansum);
+        String temp="Seek Time="+String.valueOf(seek_time);
+        textView.setText(temp);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cscan);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -358,7 +406,7 @@ public class Main2Activity extends AppCompatActivity {
         FCFSAdapter adapter = new FCFSAdapter(this);
 
         adapter.setBakingData(current_header);
-        adapter.setBakingNumber(ntrack);
+        adapter.setBakingNumber(ntrack+2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
@@ -388,7 +436,6 @@ public class Main2Activity extends AppCompatActivity {
 
         else
         {
-            k=0;
             for(int i=he;i>=0;i--)
             {
                 current_header[k]=track_request[i];
@@ -409,7 +456,9 @@ public class Main2Activity extends AppCompatActivity {
             seek_time+=abs(current_header[i]-current_header[i+1]);
 
         }
-
+        TextView textView=(TextView)findViewById(R.id.clooksum);
+        String temp="Seek Time="+String.valueOf(seek_time);
+        textView.setText(temp);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.clook);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -418,7 +467,7 @@ public class Main2Activity extends AppCompatActivity {
         FCFSAdapter adapter = new FCFSAdapter(this);
 
         adapter.setBakingData(current_header);
-        adapter.setBakingNumber(ntrack);
+        adapter.setBakingNumber(ntrack+1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
