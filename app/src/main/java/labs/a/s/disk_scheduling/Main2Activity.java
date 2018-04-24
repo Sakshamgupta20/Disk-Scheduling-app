@@ -36,25 +36,31 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     public void addtrack(View view) {
-        //check if empty
         if (TextUtils.isEmpty(Etrack.getText()) )
         {
             Toast.makeText(Main2Activity.this, "Please Enter the track value", Toast.LENGTH_SHORT).show();
         }
+
         else{
             //Getting data from edittext
             int track = Integer.parseInt(Etrack.getText().toString());
-            Etrack.setText("");
-            track_original[ntrack]=track;
-            track_request[ntrack]=track;
-            ntrack++;
-           fcfs();
-          sstf();
-         sort();
-         scan();
-            look();
-          c_scan();
-           clook();
+            if(track>=ncylinder)
+            {
+                Toast.makeText(Main2Activity.this, "ERROR", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Etrack.setText("");
+                track_original[ntrack] = track;
+                track_request[ntrack] = track;
+                ntrack++;
+                fcfs();
+                sstf();
+                sort();
+                scan();
+                look();
+                c_scan();
+                clook();
+            }
         }
     }
 
@@ -190,11 +196,11 @@ public class Main2Activity extends AppCompatActivity {
                 }
                 count++;
             }
-            if(count==0)
-            {
-                current_header[k]=ncylinder-1;
-                k++;
-            }
+//            if(count==0)
+//            {
+//                current_header[k]=ncylinder-1;
+//                k++;
+//            }
             for(int i=he;i>=0;i--)
             {
                 current_header[k]=track_request[i];
